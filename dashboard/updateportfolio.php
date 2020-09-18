@@ -2,9 +2,42 @@
 
 session_start();
 
-if(empty($_SESSION['user'])){
-  header("LOCATION:login.php");
+require_once 'lib/portfolio.php';
+
+
+
+
+
+if(isset($_POST['desc'])){
+
+    $pro_id = $_POST['pro_id'];  
+    $desc = $_POST['desc'];
+   
+    if(isset($_FILES['img']['name'])){
+
+      $tmp =  $_FILES['img']['tmp_name'];
+      $filename = $_FILES['img']['name'];
+
+      move_uploaded_file($tmp, "upload/".$filename );
+    }else{
+      $filename = '';
+    }
+ 
+    $res = updatePro($pro_id, $desc, $filename);
+
+    
+    if($res == true){
+      header("LOCATION:allportfolio.php");
+    }else{
+      $erro = 'Project not inserted';
+    }
+
+}else{
+  $pro_id = $_GET['proid'];
+  $data = getPortfolioById($pro_id);
 }
+
+
 
 ?>
 
@@ -249,7 +282,51 @@ if(empty($_SESSION['user'])){
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-      </div><!-- /.container-fluid -->
+
+        <?php if(isset($success) OR isset($error)):?>
+          <div class="alert <?php if(isset($success)): ?>  alert-success  <?php else: ?> alert-danger <?php endif;?> alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <h5><i class="icon fas fa-ban"></i> Alert!</h5>
+                    <ul>
+                     
+                      <li><?php echo (isset($success)) ? $success : $error ?></li>  
+                     
+                    </ul>
+              </div>
+          <?php endif;?>
+
+            <form role="form" action="updateportfolio.php" method="post" enctype="multipart/form-data">
+                <div class="card-body">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Descrition</label>
+                    <textarea class="form-control textarea" name="desc"><?= $data['description']; ?></textarea>
+                  </div>
+                
+                  <img width=200px src="upload/<?= $data['img']; ?>">
+                  <div class="form-group">
+                    <label for="exampleInputFile">File input</label>
+                    <div class="input-group">
+                      <div class="custom-file">
+                        <input type="file" name="img" class="custom-file-input" id="exampleInputFile">
+                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                      </div>
+                      <div class="input-group-append">
+                        <span class="input-group-text" id="">Upload</span>
+                      </div>
+
+                      <input type="hidden" name="pro_id" value="<?=$pro_id?>">
+                    </div>
+                  </div>
+              
+                </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+              </form>
+    
+    </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
   </div>
@@ -296,6 +373,12 @@ if(empty($_SESSION['user'])){
 <script src="back_assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
 <!-- Summernote -->
 <script src="back_assets/plugins/summernote/summernote-bs4.min.js"></script>
+<script>
+  $(function () {
+    // Summernote
+    $('.textarea').summernote()
+  })
+</script>
 <!-- overlayScrollbars -->
 <script src="back_assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->

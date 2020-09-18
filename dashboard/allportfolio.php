@@ -2,9 +2,11 @@
 
 session_start();
 
-if(empty($_SESSION['user'])){
-  header("LOCATION:login.php");
-}
+require_once 'lib/portfolio.php';
+
+$data = getPortfolios();
+
+
 
 ?>
 
@@ -20,6 +22,11 @@ if(empty($_SESSION['user'])){
   <!-- Font Awesome -->
   <link rel="stylesheet" href="back_assets/plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
+
+    <!-- DataTables -->
+    <link rel="stylesheet" href="back_assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+   <link rel="stylesheet" href="back_assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Tempusdominus Bbootstrap 4 -->
   <link rel="stylesheet" href="back_assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
@@ -249,7 +256,48 @@ if(empty($_SESSION['user'])){
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-      </div><!-- /.container-fluid -->
+
+      <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">DataTable with default features</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="example1" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>Description</th>
+                    <th>User</th>
+                    <th>Image</th>
+                    <th>Update</th>
+                    <th>Delete</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <?php foreach($data as $proj):?>  
+                  <tr>
+                    <td><?= $proj['description']?></td>
+                    <td><?= $proj['name']?></td>
+                    <td><img height="100px" src="upload/<?= $proj['img']?>"></td>
+                    <td><a href="updateportfolio.php?proid=<?= $proj['id']?>" class="btn btn-primary">Update</a></td>
+                    <td><a href="deleteportfolio.php?proid=<?= $proj['id']?>" class="btn btn-danger">Delete</a></td>
+                  </tr>
+                  <?php endforeach;?>    
+                  </tbody>
+                  <tfoot>
+                  <tr>
+                    <th>Description</th>
+                    <th>User</th>
+                    <th>Image</th>
+                    <th>Update</th>
+                    <th>Delete</th>
+                  </tr>
+                  </tfoot>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+    </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
   </div>
@@ -296,6 +344,36 @@ if(empty($_SESSION['user'])){
 <script src="back_assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
 <!-- Summernote -->
 <script src="back_assets/plugins/summernote/summernote-bs4.min.js"></script>
+<script>
+  $(function () {
+    // Summernote
+    $('.textarea').summernote()
+  })
+</script>
+
+
+<script src="back_assets/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="back_assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="back_assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="back_assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+
+<script>
+  $(function () {
+    $("#example1").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+    });
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+</script>
 <!-- overlayScrollbars -->
 <script src="back_assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->

@@ -1,12 +1,23 @@
 <?php
 
+session_start();
+
+require_once 'lib/portfolio.php';
+
 if(isset($_POST['desc'])){
-    // echo '<pre>';
-    // // print_r($_FILES);die;
+  
+    $desc = $_POST['desc'];
     $tmp =  $_FILES['img']['tmp_name'];
     $filename = $_FILES['img']['name'];
-
+    $user_id = $_SESSION['user']['id'];
     move_uploaded_file($tmp, "upload/".$filename );
+
+    $res = addNewPro( $filename, $desc, $user_id);
+    if($res == true){
+      $success = 'Project inserted successfully';
+    }else{
+      $erro = 'Project not inserted';
+    }
 
 }
 
@@ -212,9 +223,9 @@ if(isset($_POST['desc'])){
                 </a>
               </li>
               <li class="nav-item">
-                <a href="./index2.html" class="nav-link">
+                <a href="allportfolio.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v2</p>
+                  <p>ALL PORTFOLIOS</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -255,6 +266,19 @@ if(isset($_POST['desc'])){
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
+
+        <?php if(isset($success) OR isset($error)):?>
+          <div class="alert <?php if(isset($success)): ?>  alert-success  <?php else: ?> alert-danger <?php endif;?> alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <h5><i class="icon fas fa-ban"></i> Alert!</h5>
+                    <ul>
+                     
+                      <li><?php echo (isset($success)) ? $success : $error ?></li>  
+                     
+                    </ul>
+              </div>
+          <?php endif;?>
+
             <form role="form" action="portfolio.php" method="post" enctype="multipart/form-data">
                 <div class="card-body">
                   <div class="form-group">
