@@ -4,7 +4,8 @@ session_start();
 
 require_once 'lib/portfolio.php';
 
-$res = deletePro($_GET['proid']);
+
+$res = $deletepro->deletePro($_GET['proid']);
 
 if($res == true)
 {

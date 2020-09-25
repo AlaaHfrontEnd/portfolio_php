@@ -12,11 +12,12 @@ if(isset($_POST['desc'])){
     $user_id = $_SESSION['user']['id'];
     move_uploaded_file($tmp, "upload/".$filename );
 
-    $res = addNewPro( $filename, $desc, $user_id);
+    
+    $res = $addnewpro->addNewPro( $filename, $desc, $user_id);
     if($res == true){
       $success = 'Project inserted successfully';
     }else{
-      $erro = 'Project not inserted';
+      $error = 'Project not inserted';
     }
 
 }
@@ -267,8 +268,8 @@ if(isset($_POST['desc'])){
     <section class="content">
       <div class="container-fluid">
 
-        <?php if(isset($success) OR isset($error)):?>
-          <div class="alert <?php if(isset($success)): ?>  alert-success  <?php else: ?> alert-danger <?php endif;?> alert-dismissible">
+        <?php if(!empty($success) OR !empty($error)):?>
+          <div class="alert <?php if(!empty($success)): ?>  alert-success  <?php else: ?> alert-danger <?php endif;?> alert-dismissible">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                     <h5><i class="icon fas fa-ban"></i> Alert!</h5>
                     <ul>

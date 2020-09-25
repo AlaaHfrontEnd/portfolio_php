@@ -25,7 +25,7 @@ if(isset($_POST['name'])){
     // print_r($error);die;
 
     if(empty($error)){
-        addNewUser($name, $email, $password);
+      $add_new_user->addNewUser($name, $email, $password);
     }
     
 }

@@ -4,7 +4,9 @@ session_start();
 
 require_once 'lib/portfolio.php';
 
-$data = getPortfolios();
+
+
+$data = $getportfolios->getPortfolios();
 
 
 

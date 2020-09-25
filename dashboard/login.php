@@ -11,7 +11,7 @@ if(isset($_POST['email'])){
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $res = login($email, $password);
+    $res = $login->login($email, $password);
 
     if(!empty($res)){
         $_SESSION['user'] = $res;

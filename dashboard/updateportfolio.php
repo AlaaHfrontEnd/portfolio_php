@@ -23,7 +23,8 @@ if(isset($_POST['desc'])){
       $filename = '';
     }
  
-    $res = updatePro($pro_id, $desc, $filename);
+    
+    $res = $updatepro->updatePro($pro_id, $desc, $filename);
 
     
     if($res == true){
@@ -32,9 +33,15 @@ if(isset($_POST['desc'])){
       $erro = 'Project not inserted';
     }
 
+    
+  
+
 }else{
   $pro_id = $_GET['proid'];
-  $data = getPortfolioById($pro_id);
+  
+  $data = $getportfolioById->getPortfolioById($pro_id);
+
+  
 }
 
 
@@ -282,19 +289,6 @@ if(isset($_POST['desc'])){
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-
-        <?php if(isset($success) OR isset($error)):?>
-          <div class="alert <?php if(isset($success)): ?>  alert-success  <?php else: ?> alert-danger <?php endif;?> alert-dismissible">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                    <h5><i class="icon fas fa-ban"></i> Alert!</h5>
-                    <ul>
-                     
-                      <li><?php echo (isset($success)) ? $success : $error ?></li>  
-                     
-                    </ul>
-              </div>
-          <?php endif;?>
-
             <form role="form" action="updateportfolio.php" method="post" enctype="multipart/form-data">
                 <div class="card-body">
                   <div class="form-group">
